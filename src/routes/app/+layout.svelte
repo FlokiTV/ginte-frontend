@@ -112,7 +112,7 @@
 		</div>
 	</div>
 	<!-- main content -->
-	<div class="bg-base-300 grow">
+	<div class="bg-base-300 grow overflow-auto">
 		{@render children()}
 	</div>
 </div>

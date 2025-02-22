@@ -51,14 +51,14 @@
 		>
 			<IconCheckAll />
 		</button>
-		<div class="bg-base-100 flex items-center gap-2 p-4 md:p-2">
+		<div class="bg-base-100 flex items-center gap-3 p-4 rounded-t-lg font-semibold">
 			<input class="checkbox" type="checkbox" />
 			<div class="hidden md:block">Nome</div>
 			<div class="grow">Email</div>
 			<div>Ações</div>
 		</div>
 		{#each Array.from({ length: 10 }) as o}
-			<div class="bg-base-100 border-base-300 border-t p-4 md:p-2 flex gap-2">
+			<div class="bg-base-100 border-base-300 border-t p-4 flex gap-3">
 				<input class="checkbox" type="checkbox" />
 				<div class="whitespace-nowrap hidden md:block">nome sobrenome grande</div>
 				<div class="grow overflow-hidden">
@@ -72,7 +72,7 @@
 			</div>
 		{/each}
 	</div>
-	<div class="flex justify-between pb-20 max-md:flex-col mt-2">
+	<div class="flex justify-between max-md:pb-20 max-md:flex-col mt-2">
 		<div class="text-center">1 de 10 linhas selecionadas</div>
 		<div class="text-center">
 			<button class="btn">Anterior</button>
