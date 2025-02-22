@@ -104,14 +104,15 @@
 				</div>
 				<span>Sair</span>
 			</a>
+			<a
+				href="//github.com/flokiTV"
+				target="_blank"
+				class="text-base-content/20 text-center text-xs">by FlokiTV</a
+			>
 		</div>
 	</div>
 	<!-- main content -->
 	<div class="bg-base-300 grow">
-		<!-- Desktop navbar -->
-		<div class="hidden md:block">
-			<div class="text-lg font-semibold uppercase">Clientes</div>
-		</div>
 		{@render children()}
 	</div>
 </div>

@@ -1,3 +1,7 @@
+<svelte:head>
+	<title>Dashboard - Ginte</title>
+</svelte:head>
+
 <div class="relative flex grow flex-col overflow-auto p-4">
 	<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
 		<div class="card bg-base-100 rounded-lg p-6 shadow-md">
