@@ -2,7 +2,6 @@
 	let isDark = $state(false);
 
 	$effect(() => {
-		console.log('effect');
 		isDark = localStorage.getItem('theme') === 'dark';
 	});
 

@@ -2,12 +2,37 @@
 	import '@/app.css';
 	import ThemeController from '@/components/themeController.svelte';
 	let { children } = $props();
+	let isMobileOpen = $state(false);
 </script>
 
-<div class="flex h-screen w-screen">
-	<div class="bg-base-100 top-0 bottom-0 flex w-full max-w-xs flex-col p-2 max-md:fixed">
-		<figure class="flex justify-center">
+<div class="flex h-screen w-screen max-md:flex-col">
+	<!-- mobile navbar -->
+	<div class="bg-base-100 p-2 md:hidden">
+		<button
+			class="btn btn-primary"
+			aria-label="Toggle navigation"
+			onclick={() => (isMobileOpen = true)}>open</button
+		>
+	</div>
+	<!-- backdrop -->
+	<button
+		onclick={() => (isMobileOpen = false)}
+		aria-label="close menu"
+		class="inset-0 z-20 backdrop-blur-sm md:hidden {isMobileOpen ? 'fixed' : 'hidden'}"
+	></button>
+	<!-- sidebar -->
+	<div
+		class="bg-base-100 top-0 bottom-0 z-30 flex w-full max-w-xs flex-col p-2 transition-all max-md:fixed max-md:{isMobileOpen
+			? 'translate-x-0'
+			: '-translate-x-full'}"
+	>
+		<figure class="relative flex justify-center">
 			<img src="/logo.png" alt="" />
+			<button
+				class="btn btn-primary absolute top-0 right-0 md:hidden"
+				aria-label="Toggle navigation"
+				onclick={() => (isMobileOpen = false)}>X</button
+			>
 		</figure>
 		<div class="mt-10 flex grow flex-col gap-2">
 			<a href="/#" class="rounded-lg bg-green-600/40 p-2 font-semibold">Clientes</a>
@@ -18,7 +43,7 @@
 				<span>Tema</span>
 				<ThemeController />
 			</div>
-			<a href="/#" class="rounded-lg p-2 text-error font-semibold">Sair</a>
+			<a href="/#" class="text-error rounded-lg p-2 font-semibold">Sair</a>
 		</div>
 	</div>
 	<div class="bg-base-300 grow">
