@@ -1,5 +1,25 @@
+<script lang="ts">
+	let isDark = $state(false);
+
+	$effect(() => {
+		console.log('effect');
+		isDark = localStorage.getItem('theme') === 'dark';
+	});
+
+	function onChange(event: Event) {
+		const target = event.target as HTMLInputElement;
+		localStorage.setItem('theme', target.checked ? 'dark' : 'light');
+	}
+</script>
+
 <label class="toggle text-base-content">
-	<input type="checkbox" value="dark" class="theme-controller" />
+	<input
+		type="checkbox"
+		checked={isDark}
+		value="dark"
+		class="theme-controller"
+		onchange={onChange}
+	/>
 
 	<svg aria-label="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
 		><g
