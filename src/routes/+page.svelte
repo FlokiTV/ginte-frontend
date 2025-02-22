@@ -39,13 +39,13 @@
 				<div class="mt-2 flex justify-end">
 					<button class="btn btn-neutral group"
 						><span class="pl-2">Entrar</span><span
-							class="relative mt-0.5 size-[3px] bg-green-600 opacity-0 transition-all group-hover:w-4 group-hover:opacity-100"
+							class="relative mt-0.5 size-[3px] bg-green-600 opacity-0 transition-all group-hover:w-4 group-hover:opacity-100 delay-150"
 						>
 							<span
-								class="absolute right-[0px] -bottom-[0px] size-[3px] -rotate-45 bg-green-600 opacity-0 transition-all group-hover:h-[7px] group-hover:opacity-100 group-hover:delay-150"
+								class="absolute right-[0px] -bottom-[0px] size-[3px] -rotate-45 bg-green-600 opacity-0 transition-all group-hover:h-[7px] group-hover:opacity-100 group-hover:delay-300"
 							></span>
 							<span
-								class="absolute -top-[0px] right-[0px] size-[3px] rotate-45 bg-green-600 opacity-0 transition-all group-hover:h-[7px] group-hover:opacity-100 group-hover:delay-150"
+								class="absolute -top-[0px] right-[0px] size-[3px] rotate-45 bg-green-600 opacity-0 transition-all group-hover:h-[7px] group-hover:opacity-100 group-hover:delay-300"
 							></span>
 						</span></button
 					>
