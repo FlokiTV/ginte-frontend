@@ -7,12 +7,12 @@
 
 <div class="flex h-screen w-screen max-md:flex-col">
 	<!-- mobile navbar -->
-	<div class="bg-base-100 p-2 md:hidden">
-		<button
-			class="btn btn-primary"
-			aria-label="Toggle navigation"
-			onclick={() => (isMobileOpen = true)}>open</button
+	<div class="bg-base-100 flex items-center p-2 md:hidden">
+		<button class="btn size-10" aria-label="Toggle navigation" onclick={() => (isMobileOpen = true)}
+			>O</button
 		>
+		<div class="grow text-center text-lg font-semibold uppercase">Clientes</div>
+		<div class="size-10"></div>
 	</div>
 	<!-- backdrop -->
 	<button
@@ -29,7 +29,7 @@
 		<figure class="relative flex justify-center">
 			<img src="/logo.png" alt="" />
 			<button
-				class="btn btn-primary absolute top-0 right-0 md:hidden"
+				class="btn absolute top-0 right-0 size-10 md:hidden"
 				aria-label="Toggle navigation"
 				onclick={() => (isMobileOpen = false)}>X</button
 			>
