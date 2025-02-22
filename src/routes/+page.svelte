@@ -47,7 +47,6 @@
 							<span
 								class="absolute -top-[0px] right-[0px] size-[3px] rotate-45 bg-green-600 opacity-0 transition-all group-hover:h-[7px] group-hover:opacity-100 group-hover:delay-150"
 							></span>
-							<!-- <span class="absolute -right-[2px] top-[0px] size-[2px] bg-red-500 rotate-45"></span> -->
 						</span></button
 					>
 				</div>
