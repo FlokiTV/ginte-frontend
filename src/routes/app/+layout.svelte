@@ -3,7 +3,14 @@
 	import '@/app.css';
 	import BackButton from '@/components/backButton.svelte';
 	import MenuButton from '@/components/menuButton.svelte';
+	import NavLink from '@/components/navLink.svelte';
 	import ThemeController from '@/components/themeController.svelte';
+	import IconBox from '@/icons/IconBox.svelte';
+	import IconBrush from '@/icons/IconBrush.svelte';
+	import IconClose from '@/icons/IconClose.svelte';
+	import IconDashboard from '@/icons/IconDashboard.svelte';
+	import IconLogout from '@/icons/IconLogout.svelte';
+	import IconPersons from '@/icons/IconPersons.svelte';
 	let { children } = $props();
 	let isMobileOpen = $state(false);
 
@@ -31,33 +38,80 @@
 			? 'max-md:translate-x-0'
 			: 'max-md:-translate-x-full'}"
 	>
+		<!-- logo -->
 		<figure class="relative flex justify-center">
 			<img src="/logo.png" alt="" />
 			<button
 				class="absolute top-0 right-0 size-10 md:hidden"
 				aria-label="Toggle navigation"
-				onclick={() => (isMobileOpen = false)}
-				><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-					><title>close</title><path
-						d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"
-					/></svg
-				></button
+				onclick={() => (isMobileOpen = false)}><IconClose /></button
 			>
 		</figure>
+		<!-- menu list -->
 		<div class="mt-10 flex grow flex-col gap-2">
-			<a href="/#" class="rounded-lg bg-green-600/40 p-2 font-semibold">Dashboard</a>
-			<a href="/app/clientes" class="p-2">Clientes</a>
-			<a href="/#" class="p-2">Estoque</a>
+			<NavLink
+				href="/app"
+				isActive={(pathname: string) => {
+					return pathname === '/app';
+				}}
+			>
+				<div class="flex items-center gap-2">
+					<div class="size-6">
+						<IconDashboard />
+					</div>
+					<div>Dashboard</div>
+				</div>
+			</NavLink>
+			<NavLink
+				href="/app/clientes"
+				isActive={(pathname: string) => {
+					return pathname.includes('/app/clientes');
+				}}
+			>
+				<div class="flex items-center gap-2">
+					<div class="size-6">
+						<IconPersons />
+					</div>
+					<div>Clientes</div>
+				</div>
+			</NavLink>
+			<div class="cursor-wait rounded-lg p-2 text-zinc-400 opacity-60">
+				<div class="flex items-center gap-2">
+					<div class="size-6">
+						<IconBox />
+					</div>
+					<div>Estoque</div>
+				</div>
+			</div>
 		</div>
+		<!-- footer -->
 		<div class="flex flex-col gap-2">
 			<div class="flex justify-between p-2">
-				<span>Tema</span>
+				<div class="flex items-center gap-2">
+					<div class="size-6">
+						<IconBrush />
+					</div>
+					<span>Tema</span>
+				</div>
 				<ThemeController />
 			</div>
-			<a href="/#" class="text-error rounded-lg p-2 font-semibold">Sair</a>
+			<a
+				href="/#"
+				class="text-error flex items-center gap-2 rounded-lg p-2 font-semibold transition-all hover:bg-red-100"
+			>
+				<div class="size-6">
+					<IconLogout />
+				</div>
+				<span>Sair</span>
+			</a>
 		</div>
 	</div>
+	<!-- main content -->
 	<div class="bg-base-300 grow">
+		<!-- Desktop navbar -->
+		<div class="hidden md:block">
+			<div class="text-lg font-semibold uppercase">Clientes</div>
+		</div>
 		{@render children()}
 	</div>
 </div>
