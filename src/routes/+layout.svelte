@@ -4,8 +4,8 @@
 	let { children } = $props();
 </script>
 
-<div class="h-screen w-screen bg-gray-200">
-	<div class="fixed right-2 top-2">
+<div class="h-screen w-screen">
+	<div class="fixed top-2 right-2">
 		<ThemeController />
 	</div>
 	{@render children()}
