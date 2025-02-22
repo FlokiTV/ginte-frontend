@@ -1,3 +1,12 @@
+<script lang="ts">
+	import { goto } from '$app/navigation';
+
+	function onSubmit(event: SubmitEvent) {
+		event.preventDefault();
+		goto('/app');
+	}
+</script>
+
 <svelte:head>
 	<title>Entrar - Ginte</title>
 </svelte:head>
@@ -9,7 +18,7 @@
 	<div class="card bg-base-100 w-full max-w-96 shadow-sm">
 		<div class="card-body">
 			<div class="text-3xl font-bold"><span class="text-5xl text-green-600">.</span>Login</div>
-			<form>
+			<form onsubmit={onSubmit}>
 				<div>
 					<dvi class="fieldset-label">Email</dvi>
 					<input required type="email" class="input validator mt-1" placeholder="Email" />
@@ -20,23 +29,23 @@
 					<div class="fieldset-label">Senha</div>
 					<input
 						required
-						minlength="8"
+						minlength="6"
 						type="password"
 						class="input validator mt-1"
 						placeholder="********"
 					/>
 					<div class="validator-hint mt-1">A senha deve conter ao menos 6 caracteres</div>
 				</div>
-				<div class="flex justify-end mt-2">
+				<div class="mt-2 flex justify-end">
 					<button class="btn btn-neutral group"
 						><span class="pl-2">Entrar</span><span
-							class="mt-0.5 relative size-[3px] bg-white group-hover:bg-green-500 opacity-0 transition-all group-hover:w-4 group-hover:opacity-100"
+							class="relative mt-0.5 size-[3px] bg-white opacity-0 transition-all group-hover:w-4 group-hover:bg-green-500 group-hover:opacity-100"
 						>
 							<span
-								class="absolute right-[0px] -bottom-[0px] size-[3px] -rotate-45 bg-white group-hover:bg-green-500 opacity-0 transition-all group-hover:h-[7px] group-hover:opacity-100 group-hover:delay-150"
+								class="absolute right-[0px] -bottom-[0px] size-[3px] -rotate-45 bg-white opacity-0 transition-all group-hover:h-[7px] group-hover:bg-green-500 group-hover:opacity-100 group-hover:delay-150"
 							></span>
 							<span
-								class="absolute -top-[0px] right-[0px] size-[3px] rotate-45 bg-white group-hover:bg-green-500 opacity-0 transition-all group-hover:h-[7px] group-hover:opacity-100 group-hover:delay-150"
+								class="absolute -top-[0px] right-[0px] size-[3px] rotate-45 bg-white opacity-0 transition-all group-hover:h-[7px] group-hover:bg-green-500 group-hover:opacity-100 group-hover:delay-150"
 							></span>
 							<!-- <span class="absolute -right-[2px] top-[0px] size-[2px] bg-red-500 rotate-45"></span> -->
 						</span></button
