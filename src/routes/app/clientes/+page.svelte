@@ -45,31 +45,47 @@
 			</div>
 		</button>
 	</div>
-	
+
 	<div class="mt-2">
 		<button
 			class="bg-base-100 border-base-300 fixed bottom-6 left-4 z-10 size-10 cursor-pointer rounded-full border p-1 md:hidden"
 		>
 			<IconCheckAll />
 		</button>
-		<div class="bg-base-100 flex items-center gap-3 rounded-t-lg p-4 font-semibold">
+		<div class="bg-base-100 flex items-center gap-3 rounded-t-lg p-3 font-semibold">
 			<input class="checkbox" type="checkbox" />
 			<div class="hidden w-[140px] shrink-0 md:block">Nome</div>
-			<div class="grow w-[140px] shrink-0">Email</div>
+			<div class="w-[140px] shrink-0 grow">Email</div>
 			<div class="hidden w-[140px] shrink-0 lg:block">Telefone</div>
 			<div class="hidden w-[140px] shrink-0 xl:block">Nascimento</div>
 			<div class="w-[50px] shrink-0">Ações</div>
 		</div>
 		{#each Array.from({ length: 10 }) as o}
-			<div class="bg-base-100 border-base-300 flex gap-3 border-t p-4">
+			<div class="bg-base-100 border-base-300 flex gap-3 border-t p-3">
 				<input class="checkbox" type="checkbox" />
 				<div class="hidden w-[140px] shrink-0 truncate md:block">nome sobrenome grande</div>
 				<div class="w-[140px] shrink-0 grow truncate">emailmtgrandeasdasdasddasd@example.com</div>
 				<div class="hidden w-[140px] shrink-0 lg:block">Telefone</div>
 				<div class="hidden w-[140px] shrink-0 xl:block">Nascimento</div>
 				<div class="w-[50px] shrink-0">
-					<div class="size-6">
-						<IconSeemore />
+					<div class="dropdown dropdown-end size-full">
+						<div
+							tabindex="0"
+							role="button"
+							class="flex size-full cursor-pointer items-center justify-center"
+						>
+							<div class="size-6">
+								<IconSeemore />
+							</div>
+						</div>
+						<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+						<ul
+							tabindex="0"
+							class="dropdown-content menu bg-base-100 border-base-300 rounded-box z-1 w-52 border p-2 shadow-sm"
+						>
+							<li><a href="/app/clientes">Editar</a></li>
+							<li><a href="/app/clientes">Remover</a></li>
+						</ul>
 					</div>
 				</div>
 			</div>
