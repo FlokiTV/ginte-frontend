@@ -45,26 +45,29 @@
 			</div>
 		</button>
 	</div>
+	
 	<div class="mt-2">
 		<button
 			class="bg-base-100 border-base-300 fixed bottom-6 left-4 z-10 size-10 cursor-pointer rounded-full border p-1 md:hidden"
 		>
 			<IconCheckAll />
 		</button>
-		<div class="bg-base-100 flex items-center gap-3 p-4 rounded-t-lg font-semibold">
+		<div class="bg-base-100 flex items-center gap-3 rounded-t-lg p-4 font-semibold">
 			<input class="checkbox" type="checkbox" />
-			<div class="hidden md:block">Nome</div>
-			<div class="grow">Email</div>
-			<div>Ações</div>
+			<div class="hidden w-[140px] shrink-0 md:block">Nome</div>
+			<div class="grow w-[140px] shrink-0">Email</div>
+			<div class="hidden w-[140px] shrink-0 lg:block">Telefone</div>
+			<div class="hidden w-[140px] shrink-0 xl:block">Nascimento</div>
+			<div class="w-[50px] shrink-0">Ações</div>
 		</div>
 		{#each Array.from({ length: 10 }) as o}
-			<div class="bg-base-100 border-base-300 border-t p-4 flex gap-3">
+			<div class="bg-base-100 border-base-300 flex gap-3 border-t p-4">
 				<input class="checkbox" type="checkbox" />
-				<div class="whitespace-nowrap hidden md:block">nome sobrenome grande</div>
-				<div class="grow overflow-hidden">
-					<div class="truncate">emailmtgrandeasdasdasddasd@example.com</div>
-				</div>
-				<div>
+				<div class="hidden w-[140px] shrink-0 truncate md:block">nome sobrenome grande</div>
+				<div class="w-[140px] shrink-0 grow truncate">emailmtgrandeasdasdasddasd@example.com</div>
+				<div class="hidden w-[140px] shrink-0 lg:block">Telefone</div>
+				<div class="hidden w-[140px] shrink-0 xl:block">Nascimento</div>
+				<div class="w-[50px] shrink-0">
 					<div class="size-6">
 						<IconSeemore />
 					</div>
@@ -72,7 +75,7 @@
 			</div>
 		{/each}
 	</div>
-	<div class="flex justify-between max-md:pb-20 max-md:flex-col mt-2">
+	<div class="mt-2 flex justify-between max-md:flex-col max-md:pb-20">
 		<div class="text-center">1 de 10 linhas selecionadas</div>
 		<div class="text-center">
 			<button class="btn">Anterior</button>
