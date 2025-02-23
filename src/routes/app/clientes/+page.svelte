@@ -18,14 +18,15 @@
 			></div>
 			<span class="z-0">Clientes</span>
 		</div>
-		<button
+		<a
+			href="/app/clientes/adicionar"
 			class="btn btn-success right-6 bottom-6 z-10 flex max-md:fixed max-md:h-auto max-md:rounded-full max-md:p-2"
 		>
 			<div class="size-6">
 				<IconPlus />
 			</div>
 			<span class="max-md:hidden">Adicionar cliente</span>
-		</button>
+		</a>
 	</div>
 	<div class="flex justify-between pb-2 md:mt-6">
 		<form class="relative flex min-w-xs max-md:w-full">
