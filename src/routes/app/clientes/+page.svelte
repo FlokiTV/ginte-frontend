@@ -300,8 +300,10 @@
 			<div class="flex flex-col items-center gap-4 md:flex-row">
 				<div class="text-sm">página {page} de {totalPages}</div>
 				<div class="text-center">
-					<button class="btn" onclick={prev}>Anterior</button>
-					<button class="btn btn-neutral" onclick={next}>Próxima</button>
+					<button disabled={page == 1} class="btn" onclick={prev}>Anterior</button>
+					<button disabled={page == totalPages} class="btn btn-neutral" onclick={next}
+						>Próxima</button
+					>
 				</div>
 			</div>
 		</div>
