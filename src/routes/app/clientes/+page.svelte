@@ -49,6 +49,12 @@
 		const [year, month, day] = date.split('-');
 		return `${day}/${month}/${year}`;
 	}
+
+	function parsePhone(phone: string) {
+		if (!phone) return '';
+		//convert 22987654321 to (22) 98765-4321
+		return `(${phone.slice(0, 2)}) ${phone.slice(2, 7)}-${phone.slice(7)}`;
+	}
 </script>
 
 <svelte:head>
@@ -121,7 +127,7 @@
 				/>
 				<div class="hidden w-[140px] shrink-0 truncate md:block">{client.name}</div>
 				<div class="w-[140px] shrink-0 grow truncate">{client.email}</div>
-				<div class="hidden w-[140px] shrink-0 lg:block">{client.phone}</div>
+				<div class="hidden w-[140px] shrink-0 lg:block">{parsePhone(client.phone)}</div>
 				<div class="hidden w-[140px] shrink-0 xl:block">{parseDate(client.date)}</div>
 				<div class="w-[50px] shrink-0">
 					<div class="dropdown dropdown-end size-full">
@@ -139,8 +145,8 @@
 							tabindex="0"
 							class="dropdown-content menu bg-base-100 border-base-300 rounded-box z-1 w-52 border p-2 shadow-sm"
 						>
-							<li><a href="/app/clientes">Editar</a></li>
-							<li><a href="/app/clientes">Remover</a></li>
+							<li><a href="/app/clientes/editar/{client.id}">Editar</a></li>
+							<li><button>Remover</button></li>
 						</ul>
 					</div>
 				</div>
