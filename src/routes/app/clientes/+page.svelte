@@ -1,5 +1,4 @@
 <script lang="ts">
-	import IconCheckAll from '@/icons/IconCheckAll.svelte';
 	import IconMagnify from '@/icons/IconMagnify.svelte';
 	import IconPlus from '@/icons/IconPlus.svelte';
 	import IconSeemore from '@/icons/IconSeemore.svelte';
@@ -9,6 +8,7 @@
 
 	let clients = $state<Client[]>([]);
 	let selecteds = $state<number[]>([]);
+	let selectedAll = $state(false);
 
 	onMount(async () => {
 		const data = await api.clients.list();
@@ -16,6 +16,33 @@
 			clients = await data.json();
 		}
 	});
+	function updateSelectedIds() {
+		selecteds = [];
+		document
+			.querySelectorAll<HTMLInputElement>('.toremove:checked')
+			.forEach((el) => selecteds.push(+el.value));
+	}
+
+	function doCheck() {
+		const allEls = document.querySelectorAll<HTMLInputElement>('.toremove');
+		const selectedEls: boolean[] = [];
+		function update() {
+			document
+				.querySelectorAll<HTMLInputElement>('.toremove')
+				.forEach((el) => selectedEls.push(el.checked));
+		}
+		update();
+		// if is all checked, uncheck all
+		if (selectedEls.every((el) => el)) {
+			allEls.forEach((el) => (el.checked = false));
+			selectedAll = false;
+		} else {
+			allEls.forEach((el) => (el.checked = true));
+			selectedAll = true;
+		}
+		update();
+		updateSelectedIds();
+	}
 </script>
 
 <svelte:head>
@@ -61,13 +88,17 @@
 	</div>
 
 	<div class="mt-2">
-		<button
-			class="bg-base-100 border-base-300 fixed bottom-6 left-4 z-10 size-10 cursor-pointer rounded-full border p-1 md:hidden"
-		>
-			<IconCheckAll />
-		</button>
 		<div class="bg-base-100 flex items-center gap-3 rounded-t-lg p-3 font-semibold">
-			<input class="checkbox" type="checkbox" />
+			<input
+				onchange={(e) => {
+					e.preventDefault();
+					doCheck();
+					const target = e.target as HTMLInputElement;
+					target.checked = selectedAll;
+				}}
+				class="checkbox"
+				type="checkbox"
+			/>
 			<div class="hidden w-[140px] shrink-0 md:block">Nome</div>
 			<div class="w-[140px] shrink-0 grow">Email</div>
 			<div class="hidden w-[140px] shrink-0 lg:block">Telefone</div>
@@ -76,7 +107,12 @@
 		</div>
 		{#each clients as client}
 			<div class="bg-base-100 border-base-300 flex gap-3 border-t p-3">
-				<input class="checkbox toremove" type="checkbox" value={client.id} />
+				<input
+					onchange={updateSelectedIds}
+					class="checkbox toremove"
+					type="checkbox"
+					value={client.id}
+				/>
 				<div class="hidden w-[140px] shrink-0 truncate md:block">{client.name}</div>
 				<div class="w-[140px] shrink-0 grow truncate">{client.email}</div>
 				<div class="hidden w-[140px] shrink-0 lg:block">{client.phone}</div>
@@ -112,12 +148,15 @@
 		{/each}
 	</div>
 	<div class="mt-2 flex justify-between max-md:flex-col max-md:pb-20">
-		<div class="text-center {selecteds.length === 0 && 'opacity-0'}">
-			1 de 10 linhas selecionadas
+		<div class="text-center text-sm">
+			{selecteds.length} de {clients.length} linhas selecionadas
 		</div>
-		<div class="text-center">
-			<button class="btn">Anterior</button>
-			<button class="btn btn-neutral">Próxima</button>
+		<div class="flex flex-col items-center gap-4 md:flex-row">
+			<div class="text-sm">página 1 de 10</div>
+			<div class="text-center">
+				<button class="btn">Anterior</button>
+				<button class="btn btn-neutral">Próxima</button>
+			</div>
 		</div>
 	</div>
 </div>
