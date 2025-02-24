@@ -17,10 +17,7 @@
 	let totalPages = $state(10);
 
 	onMount(async () => {
-		const data = await api.clients.list();
-		if (data.ok) {
-			clients = await data.json();
-		}
+		await fetchClients();
 	});
 
 	onNavigate(() => {
@@ -28,9 +25,18 @@
 		//get query from url ?q
 		const query = new URLSearchParams(window.location.search);
 		const q = query.get('q');
-		console.log(search);
 		if (q) search = decodeURIComponent(q);
 	});
+
+	async function fetchClients() {
+		const data = await api.clients.list({
+			page,
+			search
+		});
+		if (data.ok) {
+			clients = await data.json();
+		}
+	}
 
 	function updateSelectedIds() {
 		selecteds = [];
@@ -91,6 +97,7 @@
 
 	function updateQuery() {
 		goto(`/app/clientes?q=${encodeURIComponent(search)}&page=${page}`);
+		fetchClients();
 	}
 
 	function next() {

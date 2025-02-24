@@ -26,8 +26,8 @@ export const api = {
 		read(id: number) {
 			return api.fetch(`/clients/${id}`);
 		},
-		list() {
-			return api.fetch('/clients');
+		list(cfg: { page?: number; search?: string }) {
+			return api.fetch(`/clients?q=${encodeURIComponent(cfg.search || '')}&page=${cfg.page ?? 1}`);
 		},
 		update(id: number, dto: Client) {
 			return api.fetch(`/clients/${id}`, 'PATCH', JSON.stringify(dto));
