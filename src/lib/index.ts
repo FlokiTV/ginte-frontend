@@ -1,5 +1,5 @@
 export interface Client {
-	id: number;
+	id?: number;
 	name: string;
 	email: string;
 	phone: string;
@@ -19,12 +19,20 @@ export const api = {
 		return fetch(this.url + url, { method, body, headers });
 	},
 	clients: {
-		create(dto: Client) {},
-		read(id: string) {},
+		create(dto: Client) {
+			return api.fetch('/clients', 'POST', JSON.stringify(dto));
+		},
+		read(id: string) {
+			return api.fetch(`/clients/${id}`);
+		},
 		list() {
 			return api.fetch('/clients');
 		},
-		update(dto: Client) {},
-		delete(id: string) {}
+		update(id: number, dto: Client) {
+			return api.fetch(`/clients/${id}`, 'PATCH', JSON.stringify(dto));
+		},
+		delete(id: string) {
+			return api.fetch(`/clients/${id}`, 'DELETE');
+		}
 	}
 };
