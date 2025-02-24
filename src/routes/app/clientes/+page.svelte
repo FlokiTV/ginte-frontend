@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { goto, onNavigate, pushState } from '$app/navigation';
+	import { goto, onNavigate } from '$app/navigation';
 	import IconMagnify from '@/icons/IconMagnify.svelte';
+	import IconPencil from '@/icons/IconPencil.svelte';
 	import IconPlus from '@/icons/IconPlus.svelte';
 	import IconSeemore from '@/icons/IconSeemore.svelte';
 	import IconTrash from '@/icons/iconTrash.svelte';
@@ -10,6 +11,7 @@
 	let clients = $state<Client[]>([]);
 	let selecteds = $state<number[]>([]);
 	let selectedAll = $state(false);
+	let deleteClient = $state<Client>();
 	let search = $state('');
 	let page = $state(1);
 	let totalPages = $state(10);
@@ -22,8 +24,7 @@
 	});
 
 	onNavigate(() => {
-		console.log('navigate', window.location.pathname);
-
+		// console.log('navigate', window.location.pathname);
 		//get query from url ?q
 		const query = new URLSearchParams(window.location.search);
 		const q = query.get('q');
@@ -36,6 +37,17 @@
 		document
 			.querySelectorAll<HTMLInputElement>('.toremove:checked')
 			.forEach((el) => selecteds.push(+el.value));
+	}
+
+	async function doDelete() {
+		const id = deleteClient?.id;
+		if (!id) return;
+		const data = await api.clients.delete(id);
+		if (data.ok) {
+			//remove cliente from clients
+			clients = clients.filter((el) => el.id !== id);
+			deleteClient = undefined;
+		}
 	}
 
 	function doCheck() {
@@ -187,10 +199,29 @@
 						<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 						<ul
 							tabindex="0"
-							class="dropdown-content menu bg-base-100 border-base-300 rounded-box z-1 w-52 border p-2 shadow-sm"
+							class="{deleteClient !== undefined &&
+								'hidden'} dropdown-content menu bg-base-100 border-base-300 rounded-box z-1 w-52 border p-2 shadow-sm"
 						>
-							<li><a href="/app/clientes/editar/{client.id}">Editar</a></li>
-							<li><button>Remover</button></li>
+							<li>
+								<a href="/app/clientes/editar/{client.id}">
+									<div class="size-6">
+										<IconPencil />
+									</div>
+									<span>Editar</span>
+								</a>
+							</li>
+							<li>
+								<button
+									onclick={() => {
+										deleteClient = client;
+									}}
+								>
+									<div class="size-6">
+										<IconTrash />
+									</div>
+									<span>Remover</span>
+								</button>
+							</li>
 						</ul>
 					</div>
 				</div>
@@ -203,6 +234,41 @@
 			</div>
 		{/each}
 	</div>
+	<!-- remove modal -->
+	<div
+		class="{deleteClient == undefined &&
+			'hidden'} fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs"
+	>
+		<button aria-label="Close modal" class="absolute inset-0 -z-0"></button>
+		<div class="card bg-base-100 w-full max-w-[460px] shadow-sm">
+			<div class="card-body">
+				<div class="font-semibold">
+					<b class="text-red-400">CUIDADO:</b> Você está prestes a excluir um cliente!
+				</div>
+				<p class="my-4 text-sm">
+					Tem certeza de que deseja excluir permanentemente o cliente <b class="text-red-400"
+						>Claudia Sampaio da Silva?</b
+					> Esta ação não pode ser desfeita e todos os dados relacionados ao cliente, incluindo histórico
+					de empréstimos e faturas, serão removidos permanentemente.
+				</p>
+				<div class="card-actions justify-end">
+					<button
+						onclick={() => {
+							deleteClient = undefined;
+						}}
+						class="btn">Cancelar</button
+					>
+					<button onclick={doDelete} class="btn btn-error">
+						<div class="size-5">
+							<IconTrash />
+						</div>
+						<span>Deletar</span>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<div class="mt-2 flex justify-between max-md:flex-col max-md:pb-20">
 		<div class="text-center text-sm">
 			{selecteds.length} de {clients.length} linhas selecionadas
