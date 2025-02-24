@@ -22,7 +22,7 @@ export const api = {
 		create(dto: Client) {
 			return api.fetch('/clients', 'POST', JSON.stringify(dto));
 		},
-		read(id: string) {
+		read(id: number) {
 			return api.fetch(`/clients/${id}`);
 		},
 		list() {
@@ -31,7 +31,7 @@ export const api = {
 		update(id: number, dto: Client) {
 			return api.fetch(`/clients/${id}`, 'PATCH', JSON.stringify(dto));
 		},
-		delete(id: string) {
+		delete(id: number) {
 			return api.fetch(`/clients/${id}`, 'DELETE');
 		}
 	}
