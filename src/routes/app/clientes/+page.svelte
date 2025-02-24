@@ -1,9 +1,21 @@
-<script>
+<script lang="ts">
 	import IconCheckAll from '@/icons/IconCheckAll.svelte';
 	import IconMagnify from '@/icons/IconMagnify.svelte';
 	import IconPlus from '@/icons/IconPlus.svelte';
 	import IconSeemore from '@/icons/IconSeemore.svelte';
 	import IconTrash from '@/icons/iconTrash.svelte';
+	import { api, type Client } from '@/lib';
+	import { onMount } from 'svelte';
+
+	let clients = $state<Client[]>([]);
+	let selecteds = $state<number[]>([]);
+
+	onMount(async () => {
+		const data = await api.clients.list();
+		if (data.ok) {
+			clients = await data.json();
+		}
+	});
 </script>
 
 <svelte:head>
@@ -38,7 +50,8 @@
 			</button>
 		</form>
 		<button
-			class="btn btn-error right-[80px] bottom-6 z-10 flex max-md:fixed max-md:h-auto max-md:rounded-full max-md:p-2"
+			class="{selecteds.length === 0 &&
+				'hidden'} btn btn-error right-[80px] bottom-6 z-10 flex max-md:fixed max-md:h-auto max-md:rounded-full max-md:p-2"
 		>
 			<span class="max-md:pl-1">Excluir selecionados</span>
 			<div class="size-6">
@@ -61,12 +74,12 @@
 			<div class="hidden w-[140px] shrink-0 xl:block">Nascimento</div>
 			<div class="w-[50px] shrink-0">Ações</div>
 		</div>
-		{#each Array.from({ length: 10 }) as o}
+		{#each clients as client}
 			<div class="bg-base-100 border-base-300 flex gap-3 border-t p-3">
-				<input class="checkbox" type="checkbox" />
-				<div class="hidden w-[140px] shrink-0 truncate md:block">nome sobrenome grande</div>
-				<div class="w-[140px] shrink-0 grow truncate">emailmtgrandeasdasdasddasd@example.com</div>
-				<div class="hidden w-[140px] shrink-0 lg:block">Telefone</div>
+				<input class="checkbox toremove" type="checkbox" value={client.id} />
+				<div class="hidden w-[140px] shrink-0 truncate md:block">{client.name}</div>
+				<div class="w-[140px] shrink-0 grow truncate">{client.email}</div>
+				<div class="hidden w-[140px] shrink-0 lg:block">{client.phone}</div>
 				<div class="hidden w-[140px] shrink-0 xl:block">Nascimento</div>
 				<div class="w-[50px] shrink-0">
 					<div class="dropdown dropdown-end size-full">
@@ -90,10 +103,18 @@
 					</div>
 				</div>
 			</div>
+		{:else}
+			<div
+				class="bg-white font-bold text-zinc-400 rounded-b-lg p-4 flex items-center justify-center text-3xl"
+			>
+				Nehum cliente encontrado
+			</div>
 		{/each}
 	</div>
 	<div class="mt-2 flex justify-between max-md:flex-col max-md:pb-20">
-		<div class="text-center">1 de 10 linhas selecionadas</div>
+		<div class="text-center {selecteds.length === 0 && 'opacity-0'}">
+			1 de 10 linhas selecionadas
+		</div>
 		<div class="text-center">
 			<button class="btn">Anterior</button>
 			<button class="btn btn-neutral">Próxima</button>
