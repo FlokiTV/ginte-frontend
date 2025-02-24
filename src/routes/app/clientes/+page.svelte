@@ -43,6 +43,12 @@
 		update();
 		updateSelectedIds();
 	}
+
+	function parseDate(date: string) {
+		if (!date) return '';
+		const [year, month, day] = date.split('-');
+		return `${day}/${month}/${year}`;
+	}
 </script>
 
 <svelte:head>
@@ -116,7 +122,7 @@
 				<div class="hidden w-[140px] shrink-0 truncate md:block">{client.name}</div>
 				<div class="w-[140px] shrink-0 grow truncate">{client.email}</div>
 				<div class="hidden w-[140px] shrink-0 lg:block">{client.phone}</div>
-				<div class="hidden w-[140px] shrink-0 xl:block">Nascimento</div>
+				<div class="hidden w-[140px] shrink-0 xl:block">{parseDate(client.date)}</div>
 				<div class="w-[50px] shrink-0">
 					<div class="dropdown dropdown-end size-full">
 						<div
