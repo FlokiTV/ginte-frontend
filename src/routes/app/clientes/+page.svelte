@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto, onNavigate, pushState } from '$app/navigation';
 	import IconMagnify from '@/icons/IconMagnify.svelte';
 	import IconPlus from '@/icons/IconPlus.svelte';
 	import IconSeemore from '@/icons/IconSeemore.svelte';
@@ -9,6 +10,9 @@
 	let clients = $state<Client[]>([]);
 	let selecteds = $state<number[]>([]);
 	let selectedAll = $state(false);
+	let search = $state('');
+	let page = $state(1);
+	let totalPages = $state(10);
 
 	onMount(async () => {
 		const data = await api.clients.list();
@@ -16,6 +20,17 @@
 			clients = await data.json();
 		}
 	});
+
+	onNavigate(() => {
+		console.log('navigate', window.location.pathname);
+
+		//get query from url ?q
+		const query = new URLSearchParams(window.location.search);
+		const q = query.get('q');
+		console.log(search);
+		if (q) search = decodeURIComponent(q);
+	});
+
 	function updateSelectedIds() {
 		selecteds = [];
 		document
@@ -55,6 +70,30 @@
 		//convert 22987654321 to (22) 98765-4321
 		return `(${phone.slice(0, 2)}) ${phone.slice(2, 7)}-${phone.slice(7)}`;
 	}
+
+	function doSearch(event: Event) {
+		event.preventDefault();
+		page = 1;
+		updateQuery();
+	}
+
+	function updateQuery() {
+		goto(`/app/clientes?q=${encodeURIComponent(search)}&page=${page}`);
+	}
+
+	function next() {
+		if (page < totalPages) {
+			page += 1;
+			updateQuery();
+		}
+	}
+
+	function prev() {
+		if (page > 1) {
+			page -= 1;
+			updateQuery();
+		}
+	}
 </script>
 
 <svelte:head>
@@ -80,8 +119,13 @@
 		</a>
 	</div>
 	<div class="flex justify-between pb-2 md:mt-6">
-		<form class="relative flex min-w-xs max-md:w-full">
-			<input placeholder="Pesquise por nome ou email" type="text" class="input w-full" />
+		<form class="relative flex min-w-xs max-md:w-full" onsubmit={doSearch}>
+			<input
+				placeholder="Pesquise por nome ou email"
+				bind:value={search}
+				type="text"
+				class="input w-full"
+			/>
 			<button
 				class="absolute top-0 right-1 bottom-0 flex w-8 cursor-pointer items-center opacity-30"
 			>
@@ -164,10 +208,10 @@
 			{selecteds.length} de {clients.length} linhas selecionadas
 		</div>
 		<div class="flex flex-col items-center gap-4 md:flex-row">
-			<div class="text-sm">página 1 de 10</div>
+			<div class="text-sm">página {page} de {totalPages}</div>
 			<div class="text-center">
-				<button class="btn">Anterior</button>
-				<button class="btn btn-neutral">Próxima</button>
+				<button class="btn" onclick={prev}>Anterior</button>
+				<button class="btn btn-neutral" onclick={next}>Próxima</button>
 			</div>
 		</div>
 	</div>
