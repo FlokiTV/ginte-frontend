@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import IconCalendar from '@/icons/IconCalendar.svelte';
 	import IconCursor from '@/icons/IconCursor.svelte';
 	import IconLeft from '@/icons/IconLeft.svelte';
@@ -6,13 +7,25 @@
 	import IconMarker from '@/icons/IconMarker.svelte';
 	import IconPhone from '@/icons/IconPhone.svelte';
 	import IconPlus from '@/icons/IconPlus.svelte';
+	import { api, type Client } from '@/lib';
 
-	function onSubmit(event: Event) {
+	async function onSubmit(event: Event) {
 		event.preventDefault();
 		const target = event.target as HTMLFormElement;
 		const data = new FormData(target);
-		for (const [key, value] of data.entries()) {
-			console.log(`${key}: ${value}`);
+		// data to object;
+		const dataJson = Object.fromEntries(data.entries());
+
+		const insert = await api.clients.create({
+			name: String(dataJson.name),
+			email: String(dataJson.email),
+			address: String(dataJson.address),
+			phone: String(dataJson.phone)
+		});
+
+		if (insert.ok) {
+			const { id } = await insert.json();
+			goto('/app/clientes/' + id);
 		}
 	}
 </script>
@@ -53,12 +66,17 @@
 		<div class="w-full md:w-495/1000">
 			<label class="input validator w-full">
 				<span>Email *</span>
-				<input name="email" required type="email" />
+				<input
+					name="email"
+					title="Insira um email válido, como exemplo@dominio.com"
+					required
+					type="email"
+				/>
 				<div class="flex size-8 items-center opacity-60">
 					<IconMail />
 				</div>
 			</label>
-			<p class="validator-hint mt-1">Insira um email válido</p>
+			<p class="validator-hint mt-1">Insira um email válido como exemplo@dominio.com</p>
 		</div>
 		<div class="w-full md:w-495/1000">
 			<label class="input validator w-full">
