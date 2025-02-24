@@ -8,7 +8,7 @@ export interface Client {
 }
 
 export const api = {
-	url: 'http://localhost:3000',
+	url: 'https://api.digitails.com.br', //'http://localhost:3000',
 	token: '',
 	fetch(url: string, method: string = 'GET', body?: any) {
 		const headers: Record<string, string> = {
@@ -32,7 +32,7 @@ export const api = {
 		update(id: number, dto: Client) {
 			return api.fetch(`/clients/${id}`, 'PATCH', JSON.stringify(dto));
 		},
-		delete(id: number) {
+		delete(id: string) {
 			return api.fetch(`/clients/${id}`, 'DELETE');
 		}
 	}

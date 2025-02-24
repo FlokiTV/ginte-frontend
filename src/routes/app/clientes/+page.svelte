@@ -9,7 +9,7 @@
 	import { onMount } from 'svelte';
 
 	let clients = $state<Client[]>([]);
-	let selecteds = $state<number[]>([]);
+	let selectedsToRemove = $state<number[]>([]);
 	let selectedAll = $state(false);
 	let deleteClient = $state<Client>();
 	let search = $state('');
@@ -29,29 +29,44 @@
 	});
 
 	async function fetchClients() {
-		const data = await api.clients.list({
+		const req = await api.clients.list({
 			page,
 			search
 		});
-		if (data.ok) {
-			clients = await data.json();
+		if (req.ok) {
+			const { data, total } = await req.json();
+			clients = data;
+			totalPages = Math.ceil(total / 10);
 		}
 	}
 
 	function updateSelectedIds() {
-		selecteds = [];
+		selectedsToRemove = [];
 		document
 			.querySelectorAll<HTMLInputElement>('.toremove:checked')
-			.forEach((el) => selecteds.push(+el.value));
+			.forEach((el) => selectedsToRemove.push(+el.value));
+	}
+
+	async function doDeleteMass() {
+		const id = selectedsToRemove.join(',');
+		if (!id) return;
+		const data = await api.clients.delete(id);
+		if (data.ok) {
+			fetchClients();
+			const allEls = document.querySelectorAll<HTMLInputElement>('.toremove');
+			allEls.forEach((el) => (el.checked = false));
+			selectedAll = false;
+			deleteClient = undefined;
+			selectedsToRemove = [];
+		}
 	}
 
 	async function doDelete() {
 		const id = deleteClient?.id;
 		if (!id) return;
-		const data = await api.clients.delete(id);
+		const data = await api.clients.delete(String(id));
 		if (data.ok) {
-			//remove cliente from clients
-			clients = clients.filter((el) => el.id !== id);
+			fetchClients();
 			deleteClient = undefined;
 		}
 	}
@@ -152,7 +167,8 @@
 			</button>
 		</form>
 		<button
-			class="{selecteds.length === 0 &&
+			onclick={doDeleteMass}
+			class="{selectedsToRemove.length === 0 &&
 				'hidden'} btn btn-error right-[80px] bottom-6 z-10 flex max-md:fixed max-md:h-auto max-md:rounded-full max-md:p-2"
 		>
 			<span class="max-md:pl-1">Excluir selecionados</span>
@@ -276,16 +292,18 @@
 		</div>
 	</div>
 
-	<div class="mt-2 flex justify-between max-md:flex-col max-md:pb-20">
-		<div class="text-center text-sm">
-			{selecteds.length} de {clients.length} linhas selecionadas
-		</div>
-		<div class="flex flex-col items-center gap-4 md:flex-row">
-			<div class="text-sm">página {page} de {totalPages}</div>
-			<div class="text-center">
-				<button class="btn" onclick={prev}>Anterior</button>
-				<button class="btn btn-neutral" onclick={next}>Próxima</button>
+	{#if clients}
+		<div class="mt-2 flex justify-between max-md:flex-col max-md:pb-20">
+			<div class="text-center text-sm">
+				{selectedsToRemove.length} de {clients.length} linhas selecionadas
+			</div>
+			<div class="flex flex-col items-center gap-4 md:flex-row">
+				<div class="text-sm">página {page} de {totalPages}</div>
+				<div class="text-center">
+					<button class="btn" onclick={prev}>Anterior</button>
+					<button class="btn btn-neutral" onclick={next}>Próxima</button>
+				</div>
 			</div>
 		</div>
-	</div>
+	{/if}
 </div>
